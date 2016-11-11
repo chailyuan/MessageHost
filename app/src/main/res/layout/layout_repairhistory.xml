@@ -29,10 +29,11 @@
             android:gravity="center"
             android:background="@drawable/edit_search"
             android:drawableLeft="@drawable/sp"
-            android:singleLine="true"
             android:textColor="#0f0f0f"
             android:padding="5dp"
             android:hint="请输入关键词"
+            android:maxLines="1"
+            android:singleLine="true"
             android:text=""/>
 
     </LinearLayout>

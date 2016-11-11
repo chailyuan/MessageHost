@@ -4,73 +4,104 @@
     android:versionCode="1"
     android:versionName="2.1">
 
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="17" />
+
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.GET_TASKS"/>
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <android:uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/logomine"
-
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".LoginActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".NewUserActivity"
-            android:label="@string/app_name"/>
-
+        <activity
+            android:name=".scope.ZZShowScopeActivity"
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/short_name"
+            android:screenOrientation="landscape"
+            android:theme="@style/ScopeTheme" />
+        <activity
+            android:name=".NewUserActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
             android:label="@string/mainactivity_name"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ShowConfigActivity"
             android:label="@string/showconfigactivity_name"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".RepairMessageActivity"
             android:label="@string/repairmessactivity_name"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".InExportActivity"
             android:label="@string/inexportactivity_name"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".StorageActivity"
             android:label="@string/storageactivity_name"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".HelpActivity"
+            android:name=".AboutActivity"
             android:label="@string/helpactivity_name"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
-        <activity android:name=".RepairCheckActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".RepairCheckActivity"
             android:label="维修记录查询"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
-        <activity android:name=".RepairHistoryActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".RepairHistoryActivity"
             android:label="维修经验查询"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
-        <activity android:name=".RepairImportActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".RepairImportActivity"
             android:label="维修情况录入"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
-        <activity android:name=".ShowItemEditActivity"
-            android:theme="@style/MyDialogStyle"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ShowItemEditActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyDialogStyle" />
+        <activity
+            android:name=".scope.SettingsActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/ScopeTheme" />
+        <activity
+            android:name=".scope.OpenFileActivity"
+            android:label="示波器"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.AppCompat.Light" />
 
         <service
             android:name=".SynchronizationService"
@@ -82,9 +113,17 @@
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="DataSyncServerStart"/>
+                <action android:name="DataSyncServerStart" />
             </intent-filter>
         </receiver>
+
+        <activity
+            android:name=".BugDigActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".DignoseActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

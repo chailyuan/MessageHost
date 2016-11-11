@@ -19,6 +19,7 @@ public class RepairMessageActivity extends AppCompatActivity implements View.OnC
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setTitle("电脑维修信息管理");
+        setTitle(R.string.repairmessactivity_name);
 //        toolbar.setSubtitle("linyuan");
         toolbar.setLogo(R.drawable.config);
         setSupportActionBar(toolbar);

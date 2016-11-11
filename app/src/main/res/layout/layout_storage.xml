@@ -29,6 +29,9 @@
             android:drawableLeft="@drawable/sp"
             android:textColor="#0f0f0f"
             android:padding="5dp"
+            android:maxLines="1"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
             android:hint="请输入条形码"/>
 
     </LinearLayout>

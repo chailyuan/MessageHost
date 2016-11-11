@@ -7,17 +7,25 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.database.Cursor;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
+
+import java.io.IOException;
+import java.net.Socket;
 
 /**
  * Created by 临园 on 2016/4/24.
@@ -33,6 +41,9 @@ public class InExportActivity extends AppCompatActivity implements View.OnClickL
     private boolean inProgressing = false;
     private Button btnExport,btnImport;
 
+    private boolean wifiMode = false;
+    private  String wifiIp;
+
 
     public class MyReceive extends BroadcastReceiver{
 
@@ -47,6 +58,10 @@ public class InExportActivity extends AppCompatActivity implements View.OnClickL
                     btnExport.setEnabled(false);
                     btnImport.setEnabled(false);
                     inProgressing = false;
+                }
+                if (str.equals("PC已连接")&& wifiMode){
+                    btnExport.setEnabled(true);
+                    btnImport.setEnabled(true);
                 }
             }
 
@@ -69,7 +84,7 @@ public class InExportActivity extends AppCompatActivity implements View.OnClickL
                     inProgressing = true;
                 }
                 progressBar.setProgress(percent);
-                progressPer.setText("传送进度："+percent+"%");
+                progressPer.setText(getString(R.string.export_progress)+percent+"%");
             }
         }
     }
@@ -90,13 +105,28 @@ public class InExportActivity extends AppCompatActivity implements View.OnClickL
 
     private  MyConn conn;
 
+
+    private String intToIp(int paramInt) {
+        return (paramInt & 0xFF) + "." + (0xFF & paramInt >> 8) + "." + (0xFF & paramInt >> 16) + "."
+                + (0xFF & paramInt >> 24);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_imexport);
 
+        //wifi
+        WifiManager wifimanage=(WifiManager)getSystemService(Context.WIFI_SERVICE);//获取WifiManager
+        if(!wifimanage.isWifiEnabled())  {
+            wifimanage.setWifiEnabled(true);
+        }
+        WifiInfo wifiinfo= wifimanage.getConnectionInfo();
+
+        wifiIp=intToIp(wifiinfo.getIpAddress());
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setTitle("数据导入导出");
+        setTitle(getString(R.string.export_title));
         toolbar.setLogo(R.drawable.publish);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.goback_bg);
@@ -118,7 +148,7 @@ public class InExportActivity extends AppCompatActivity implements View.OnClickL
 
         Intent i = getIntent();
         String d = i.getStringExtra("order");
-        System.out.println("传递过来的命令是："+d);
+//        System.out.println("传递过来的命令是："+d);
 
         if (d!=null&&d.equals("import")){
             btnExport.setEnabled(false);
@@ -149,16 +179,16 @@ public class InExportActivity extends AppCompatActivity implements View.OnClickL
         };
     }
 
-
-
     @Override
     public void onBackPressed() {
         if (inProgressing){
-            Toast.makeText(InExportActivity.this,"正在导入，请勿切换界面",Toast.LENGTH_LONG).show();
+            Toast.makeText(InExportActivity.this, R.string.export_warning_nochange,Toast.LENGTH_LONG).show();
             return;
         }
         super.onBackPressed();
     }
+
+
 
     @Override
     public void onClick(View v) {
@@ -182,9 +212,56 @@ public class InExportActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     protected void onDestroy() {
+
+        myService.quitSign = true;//退出标志有效
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Socket socket = new Socket("127.0.0.1",12321);
+                    socket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
+
         unbindService(conn);
+        stopService(new Intent(this,SynchronizationService.class));
         unregisterReceiver(denymicBroad);
         super.onDestroy();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.export_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+//
+//        switch (item.getitemid()) {
+//            case r.id.action_wifimode:
+//                wifimode=!wifimode;
+//                item.setchecked(wifimode);
+//                if (wifimode){
+//                    ((textview)findviewbyid(r.id.tv_wifiip)).settext("wifi模块ip地址是："+wifiip);
+//                    ((linearlayout)findviewbyid(r.id.ll_wifiip)).setvisibility(view.visible);
+//                    btnexport.setenabled(true);
+//                    btnimport.setenabled(true);
+//                }
+//                else{
+//                    btnexport.setenabled(false);
+//                    btnimport.setenabled(false);
+//                    ((linearlayout)findviewbyid(r.id.ll_wifiip)).setvisibility(view.gone);
+//                }
+//
+//                break;
+//        }
+
+        return true;
+    }
 }

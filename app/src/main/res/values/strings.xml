@@ -1,14 +1,80 @@
 <resources>
     <string name="loginactivity_name">请登录</string>
-    <string name="showconfigactivity_name">电脑配置信息维护</string>
-    <string name="repairmessactivity_name">电脑维修信息管理</string>
+    <string name="showconfigactivity_name">装备配置信息维护</string>
+    <string name="repairmessactivity_name">装备维修信息管理</string>
     <string name="inexportactivity_name">数据导入导出</string>
     <string name="storageactivity_name">出入库管理</string>
+    <string name="scopeactivity_name">采集数据观测</string>
     <string name="helpactivity_name">关于</string>
     <string name="mainactivity_name">请选择功能</string>
     <string name="getcodeactivity_name">请输入条形码</string>
     <string name="app_name">管理助手</string>
     <string name="newuser">新用户注册</string>
-    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_login">登录</string>
+
+    <string name="settings">设置</string>
+    <string name="action_settings">设置</string>
+    <string name="pref_input_category">输入</string>
+    <string name="pref_input">输入源</string>
+    <string name="pref_input_summ">%s"</string>
+    <string name="pref_display">显示</string>
+    <string name="pref_auto">自动</string>
+    <string name="pref_menual">手动</string>
+    <string name="pref_screen">屏幕长亮</string>
+    <string name="pref_screen_summ">Keep screen on</string>
+    <string name="pref_auto_summ">自动读取数据</string>
+    <string name="pref_about">关于</string>
+    <string name="pref_about_summ">手机示波器 %s</string>
+    <string name="copyright">版权所有 \u00A9 2016 Linyuan Chai</string>
+    <string name="licence">许可证: GNU GPLv3</string>
+    <string name="short_name">示波器</string>
+
+    <string name="tb_1s">1 s</string>
+    <string name="tb_2s">2 s</string>
+    <string name="tb_5s">5 s</string>
+    <string name="tb_10s">10 s</string>
+    <string name="tb_20s">20 s</string>
+    <string name="tb_50s">50 s</string>
+
+    <string name="action_timebase">时间基准</string>
+    <string name="action_small">缩小</string>
+    <string name="action_storage">存储</string>
+    <string name="action_left">向前</string>
+    <string name="action_start">起始页</string>
+    <string name="action_end">最终页</string>
+    <string name="action_spectrum">选择文件</string>
+    <string name="action_right">向后</string>
+    <string name="action_dealdata">处理数据</string>
+
+    <string name="error_choosefile">请选择要打开的文件</string>
+    <string name="error_fileNotExist">文件不存在，请重新选择</string>
+    <string name="error_fileEmpty">文件内容为空，请重新选择</string>
+    <string name="error_filewrong">请选择文件</string>
+    <string name="error_lastpage">当前是最后一页</string>
+    <string name="error_firstpage">当前已经是第一页</string>
+    <string name="pref_length_summ">设置示波器每页显示的数据量</string>
+    <string name="pref_length">页长</string>
+    <string name="action_clear">清除</string>
+    <string name="action_autosign">自动模式选择</string>
+    <string name="action_bigger">放大</string>
+
+    <string name="loginactivity_welcome">欢迎使用</string>
+    <string name="login_username">用户名称：</string>
+    <string name="login_username_hint">请输入用户名</string>
+    <string name="login_password">用户密码：</string>
+    <string name="login_password_hint">请输入密码</string>
+    <string name="login_login_btn">登录</string>
+    <string name="login_forget">忘记密码？</string>
+    <string name="login_forget_method">请使用管理员账号登录重置密码！</string>
+    <string name="login_username_notempty">用户名不能为空</string>
+    <string name="login_error_up">用户名或密码错误</string>
+    <string name="export_progress">传送进度：</string>
+    <string name="export_title">数据导入导出</string>
+    <string name="export_warning_nochange">正在导入，请勿切换界面</string>
+    <string name="bugdignose_name">装备故障诊断</string>
+    <string name="prompt_phenomenon">故障现象</string>
+    <string name="action_bug_position">诊断</string>
+    <string name="prompt_position">故障位置</string>
+
 
 </resources>

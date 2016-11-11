@@ -1,0 +1,122 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!---ic_bigger-->
+    <item
+        android:id="@+id/bigger"
+        android:icon="@drawable/ic_bigger"
+        android:showAsAction="always"
+        android:title="@string/action_bigger" />
+    <!--ic_smaller-->
+    <item
+        android:id="@+id/smaller"
+        android:icon="@drawable/ic_smaller"
+        android:showAsAction="always"
+        android:title="@string/action_small" />
+
+
+    <item
+        android:id="@+id/automove"
+        android:icon="@drawable/ic_action_autotrue"
+        android:showAsAction="always"
+        android:title="@string/action_autosign"/>
+
+    <item
+        android:id="@+id/countbase"
+        android:icon="@drawable/ic_action_timebase"
+        android:showAsAction="always"
+        android:title="@string/action_timebase">
+
+        <menu>
+            <group android:checkableBehavior="single">
+
+                <item
+                    android:id="@+id/tb_1s"
+                    android:checkable="true"
+                    android:title="@string/tb_1s" />
+
+                <item
+                    android:id="@+id/tb_2s"
+                    android:checkable="true"
+                    android:title="@string/tb_2s" />
+
+                <item
+                    android:id="@+id/tb_5s"
+                    android:checkable="true"
+                    android:checked="true"
+                    android:title="@string/tb_5s" />
+
+                <item
+                    android:id="@+id/tb_10s"
+                    android:checkable="true"
+                    android:title="@string/tb_10s" />
+
+                <item
+                    android:id="@+id/tb_20s"
+                    android:checkable="true"
+                    android:title="@string/tb_20s" />
+
+                <item
+                    android:id="@+id/tb_50s"
+                    android:checkable="true"
+                    android:title="@string/tb_50s" />
+            </group>
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/storage"
+        android:icon="@drawable/ic_action_storage"
+        android:showAsAction="always"
+        android:visible="false"
+        android:title="@string/action_storage" />
+
+    <item
+        android:id="@+id/clear"
+        android:icon="@drawable/ic_action_openfile"
+        android:showAsAction="always"
+
+        android:title="@string/action_clear" />
+
+    <item
+        android:id="@+id/goleft"
+        android:icon="@drawable/ic_action_left"
+        android:showAsAction="always"
+        android:title="@string/action_left" />
+
+    <item
+        android:id="@+id/goright"
+        android:icon="@drawable/ic_action_right"
+        android:showAsAction="always"
+        android:title="@string/action_right" />
+
+    <item
+        android:id="@+id/gotostart"
+        android:icon="@drawable/ic_action_start"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_start" />
+
+    <item
+        android:id="@+id/gotoend"
+        android:icon="@drawable/ic_action_end"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_end" />
+
+    <item
+        android:id="@+id/action_getfile"
+        android:icon="@drawable/ic_action_spectrum"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_spectrum" />
+    <item
+        android:id="@+id/action_dealdata"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_dealdata"
+        android:checkable="true"
+        android:checked="true"/>
+
+    <item
+        android:id="@+id/action_settings"
+        android:icon="@drawable/ic_action_settings"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_settings" />
+
+</menu>

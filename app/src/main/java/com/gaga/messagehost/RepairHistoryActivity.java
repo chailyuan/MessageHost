@@ -73,6 +73,8 @@ public class RepairHistoryActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 String str = etRPHistoryCode.getText().toString();
+                str = str.replace("\n","");
+                str = str.replace(" ","");
                 if (!str.equals("")) {
                     Cursor cursor = dbSingle.dbReader.query(MyDataBase.TABLENAME_REPARE, null, MyDataBase.RP_PHENOMENON + " LIKE ?", new String[]{"%" + str + "%"}, null, null, null, null);
                     mData = GetData(cursor);
@@ -88,6 +90,7 @@ public class RepairHistoryActivity extends AppCompatActivity {
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_ENTER) {
             String code = etRPHistoryCode.getText().toString().replace("\n", "");
+            code = code.replace(" ","");
             etRPHistoryCode.setText(code);
 
             if (code.equals("")) {
@@ -183,7 +186,7 @@ public class RepairHistoryActivity extends AppCompatActivity {
 //            holder.info = (TextView) convertView.findViewById(R.id.tv_RPCheck_item);
 
 
-            if (mData.get(position).get("section")==true){
+            if ((Boolean) (mData.get(position).get("section")) ){
                 holder.info.setVisibility(View.GONE);
                 convertView.setBackgroundColor(parent.getResources().getColor(R.color.green_light));
             }else {

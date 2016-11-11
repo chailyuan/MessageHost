@@ -1,11 +1,8 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_fastscroll"
-        android:showAsAction="never"
-        android:title="@string/action_fastscroll"
+        android:id="@+id/action_wifimode"
+        android:title="WIFI连接模式(测试中)"
         android:checkable="true"/>
-
-
-
 </menu>

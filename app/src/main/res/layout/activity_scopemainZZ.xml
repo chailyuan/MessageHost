@@ -1,0 +1,42 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+
+    <com.gaga.messagehost.scope.ZZYScale
+        android:id="@+id/zzyscale"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@+id/zzscope"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"/>
+
+    <com.gaga.messagehost.scope.ZZScope
+        android:id="@id/zzscope"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/zzxscale"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/zzyscale" />
+
+    <com.gaga.messagehost.scope.ZZXScale
+        android:id="@id/zzxscale"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/zzscope"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true" />
+
+    <com.gaga.messagehost.scope.ZZUnit
+        android:id="@+id/zzunit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/zzyscale"
+        android:layout_toLeftOf="@id/zzxscale" />
+
+</RelativeLayout>

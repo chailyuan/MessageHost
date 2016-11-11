@@ -172,6 +172,40 @@
             android:background="@drawable/background_rectangle1"
             >
             <ImageView
+                android:src="@drawable/ic_main_scope"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:text="@string/bugdignose_name"
+                android:gravity="center"
+                android:background="@drawable/background_rectangle1"
+                android:textSize="18sp" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+            <ImageView
+                android:src="@drawable/akg"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_6"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/background_rectangle2"
+            >
+            <ImageView
                 android:src="@drawable/about"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
@@ -185,7 +219,7 @@
                 android:layout_gravity="start"
                 android:text="@string/helpactivity_name"
                 android:gravity="center"
-                android:background="@drawable/background_rectangle1"
+                android:background="@drawable/background_rectangle2"
                 android:textSize="18sp" />
             <LinearLayout
                 android:layout_width="wrap_content"

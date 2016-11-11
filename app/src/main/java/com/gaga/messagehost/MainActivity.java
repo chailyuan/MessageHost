@@ -1,7 +1,6 @@
 package com.gaga.messagehost;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -18,7 +17,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.layout_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setTitle("管理助手");
+        setTitle(R.string.app_name);
         toolbar.setSubtitle(R.string.mainactivity_name);
         toolbar.setLogo(R.drawable.logomine);
         setSupportActionBar(toolbar);
@@ -28,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ((LinearLayout)findViewById(R.id.ll_3)).setOnClickListener(this);
         ((LinearLayout)findViewById(R.id.ll_4)).setOnClickListener(this);
         ((LinearLayout)findViewById(R.id.ll_5)).setOnClickListener(this);
+        ((LinearLayout)findViewById(R.id.ll_6)).setOnClickListener(this);
     }
 
     @Override
@@ -47,7 +47,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(MainActivity.this,StorageActivity.class));
                 break;
             case R.id.ll_5:
-                startActivity(new Intent(MainActivity.this,HelpActivity.class));
+                startActivity(new Intent(MainActivity.this,BugDigActivity.class));
+                break;
+            case R.id.ll_6:
+                startActivity(new Intent(MainActivity.this,AboutActivity.class));
                 break;
         }
     }

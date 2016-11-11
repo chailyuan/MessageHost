@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,7 +49,7 @@ public class ShowConfigActivity extends AppCompatActivity {
         setContentView(R.layout.layout_showconfig);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setTitle("电脑配置信息维护");
+        setTitle(R.string.showconfigactivity_name);
 //        toolbar.setSubtitle("linyuan");
         toolbar.setLogo(R.drawable.edit);
         setSupportActionBar(toolbar);
@@ -88,18 +89,49 @@ public class ShowConfigActivity extends AppCompatActivity {
         });
 
         etShowCode = (EditText) findViewById(R.id.et_showCode);
-        etShowCode.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        etShowCode.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    focus_etShowCode = true;
-                } else {
-                    focus_etShowCode = false;
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 
+                System.out.println("进入回车事件了");
+                String code = etShowCode.getText().toString().replace("\n", "");
+                etShowCode.setText(code);
+
+                if (code.equals("")) {
+                    //返回的数据是空的
+                    Toast.makeText(getApplicationContext(),"条形码不能为空！",Toast.LENGTH_SHORT).show();
+                } else {
+                    //返回的数据不空
+                    //隐藏键盘
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(etShowCode.getWindowToken(), 0);
+
+                    Cursor cursor = dbSingle.dbReader.query(MyDataBase.TABLENAME_MAINTAIN, null, MyDataBase.MT_CODE + " =?", new String[]{code}, null, null, null, null);
+                    if (cursor.moveToNext()) {
+                        String status = cursor.getString(cursor.getColumnIndex(MyDataBase.MT_STATUS));
+                        System.out.println(status);
+
+                        if (mData!=null){
+                            mData.clear();
+                            mData=null;
+                        }
+                        mData = GetData(cursor);
+
+
+                    }else {
+                        Toast.makeText(getApplicationContext(),"无记录！",Toast.LENGTH_SHORT).show();
+                        if (mData!=null){
+                            mData.clear();
+                            mData=null;
+                        }
+                        mData = InitmData();
+                    }
+
+                    cursor.close();
                 }
+                return true;
             }
         });
-
     }
 
     @Override
@@ -160,48 +192,6 @@ public class ShowConfigActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_ENTER && focus_etShowCode == true) {
-            //回车事件的时候
-            System.out.println("进入回车事件了");
-            String code = etShowCode.getText().toString().replace("\n", "");
-            etShowCode.setText(code);
-
-            if (code.equals("")) {
-                //返回的数据是空的
-            } else {
-                //返回的数据不空
-                //隐藏键盘
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(etShowCode.getWindowToken(), 0);
-
-                Cursor cursor = dbSingle.dbReader.query(MyDataBase.TABLENAME_MAINTAIN, null, MyDataBase.MT_CODE + " =?", new String[]{code}, null, null, null, null);
-                if (cursor.moveToNext()) {
-                    String status = cursor.getString(cursor.getColumnIndex(MyDataBase.MT_STATUS));
-                    System.out.println(status);
-
-                    if (mData!=null){
-                        mData.clear();
-                        mData=null;
-                    }
-                    mData = GetData(cursor);
-
-
-                }else {
-                    if (mData!=null){
-                        mData.clear();
-                        mData=null;
-                    }
-                    mData = InitmData();
-                }
-
-                cursor.close();
-            }
-            return true;
-        }
-        return super.onKeyUp(keyCode, event);
-    }
 
     //提取出来方便点
     public final class ViewHolder {

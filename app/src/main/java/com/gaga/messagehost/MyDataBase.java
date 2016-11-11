@@ -65,6 +65,22 @@ public class MyDataBase extends SQLiteOpenHelper {
     public static final String USER_NAME = "name";//电脑维修信息表_表名
     public static final String USER_PASSWORD = "password";//电脑维修信息表_表名
 
+    //表四，综合故障诊断
+    public static final String TABLENAME_DIGNOSE = "t_bug_dignose";//电脑维修信息表_表名
+    public static final String DIG_PHENOMENON1 = "dig_phenomenon1";//电脑维修信息表_表名
+    public static final String DIG_PHENOMENON2 = "dig_phenomenon2";//电脑维修信息表_表名
+    public static final String DIG_PHENOMENON3 = "dig_phenomenon3";//电脑维修信息表_表名
+    public static final String DIG_PHENOMENON4 = "dig_phenomenon4";//电脑维修信息表_表名
+    public static final String DIG_PHENOMENON5 = "dig_phenomenon5";//电脑维修信息表_表名
+    public static final String DIG_PHENOMENON6 = "dig_phenomenon6";//电脑维修信息表_表名
+    public static final String DIG_POSITION1 = "dig_position1";//电脑维修信息表_表名
+    public static final String DIG_POSITION2 = "dig_position2";//电脑维修信息表_表名
+    public static final String DIG_POSITION3 = "dig_position3";//电脑维修信息表_表名
+    public static final String DIG_POSITION4 = "dig_position4";//电脑维修信息表_表名
+    //表四信息集合
+    public static final String[] DIG_ALL_TITLE = new String[]{DIG_PHENOMENON1,DIG_PHENOMENON2,DIG_PHENOMENON3,DIG_PHENOMENON4,DIG_PHENOMENON5,DIG_PHENOMENON6,
+            DIG_POSITION1,DIG_POSITION2,DIG_POSITION3,DIG_POSITION4};
+
     private MyDataBase(Context context) {
         super(context, "messagehost.db", null, 1);
     }
@@ -115,6 +131,20 @@ public class MyDataBase extends SQLiteOpenHelper {
                 "_id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 USER_NAME + " VARCHAR(20) DEFAULT \"\"," +
                 USER_PASSWORD + " VARCHAR(20) DEFAULT \"\")");
+
+        //创建表四
+        db.execSQL("CREATE TABLE " + TABLENAME_DIGNOSE + "(" +
+                "_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                DIG_PHENOMENON1 + " VARCHAR(20) DEFAULT \"\"," +
+                DIG_PHENOMENON2 + " VARCHAR(20) DEFAULT \"\"," +
+                DIG_PHENOMENON3 + " VARCHAR(20) DEFAULT \"\"," +
+                DIG_PHENOMENON4 + " VARCHAR(20) DEFAULT \"\"," +
+                DIG_PHENOMENON5 + " VARCHAR(20) DEFAULT \"\"," +
+                DIG_PHENOMENON6 + " VARCHAR(20) DEFAULT \"\"," +
+                DIG_POSITION1 + " VARCHAR(20) DEFAULT \"\"," +
+                DIG_POSITION2 + " VARCHAR(20) DEFAULT \"\"," +
+                DIG_POSITION3 + " VARCHAR(20) DEFAULT \"\"," +
+                DIG_POSITION4 + " VARCHAR(20) DEFAULT \"\")");
     }
 
     @Override

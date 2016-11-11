@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/action_settings">
+<!--
+    <PreferenceCategory
+        android:key="pref_input_category"
+        android:title="@string/pref_input_category">
+        <ListPreference
+            android:defaultValue="@integer/def_input"
+            android:dialogIcon="@drawable/ic_pref_mic"
+            android:entries="@array/pref_input_entries"
+            android:entryValues="@array/pref_input_entry_values"
+            android:icon="@drawable/ic_pref_mic"
+            android:key="pref_input"
+            android:summary="@string/pref_input_summ"
+            android:title="@string/pref_input" />
+    </PreferenceCategory>
+
+-->
+
+    <PreferenceCategory
+        android:key="pref_readlength_category"
+        android:title="读取">
+        <EditTextPreference
+            android:defaultValue="500"
+            android:dialogIcon="@drawable/ic_about"
+            android:icon="@drawable/ic_input_length"
+            android:key="pref_inputlength"
+            android:persistent="true"
+            android:summary="@string/pref_length_summ"
+            android:title="@string/pref_length"
+            android:inputType="number"
+            android:numeric="integer"
+            android:hint="最大值500"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="pref_display_category"
+        android:enabled="false"
+        android:title="@string/pref_auto">
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:icon="@drawable/ic_pref_screen"
+            android:key="pref_auto"
+            android:persistent="true"
+            android:summary="@string/pref_auto_summ"
+            android:title="@string/pref_auto" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="pref_display_category"
+        android:title="@string/pref_display">
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:icon="@drawable/ic_pref_screen"
+            android:key="pref_screen"
+            android:persistent="true"
+            android:summary="@string/pref_screen_summ"
+            android:title="@string/pref_screen" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="pref_about_category"
+        android:title="@string/pref_about">
+
+        <com.gaga.messagehost.scope.ZZAboutPreference
+            android:dialogIcon="@drawable/ic_about"
+            android:dialogLayout="@layout/about_dialog"
+            android:icon="@drawable/ic_about"
+            android:key="pref_about"
+            android:negativeButtonText=""
+            android:summary="@string/pref_about_summ"
+            android:title="@string/pref_about" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

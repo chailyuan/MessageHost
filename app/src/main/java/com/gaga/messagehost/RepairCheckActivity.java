@@ -30,7 +30,6 @@ import java.util.Map;
 public class RepairCheckActivity extends AppCompatActivity {
     private MyDataBase dbSingle = null;
     private EditText etCode;
-    private ListView lvRpCheck;
     private List<Map<String, Object>> mData;
 
     private TextView tvClass,tvCode;
@@ -58,9 +57,41 @@ public class RepairCheckActivity extends AppCompatActivity {
 
         dbSingle = MyDataBase.GetDb(this);
 
-        lvRpCheck = (ListView)findViewById(R.id.lv_repaircheck);
+        ListView lvRpCheck = (ListView)findViewById(R.id.lv_repaircheck);
         etCode = (EditText)findViewById(R.id.et_repaircheckCode);
         etCode.requestFocus();
+
+        etCode.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                String code = etCode.getText().toString().replace("\n", "");
+                etCode.setText(code);
+
+                if (code.equals("")) {
+                    //返回的数据是空的
+                } else {
+                    //返回的数据不空
+                    //隐藏键盘
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(etCode.getWindowToken(), 0);
+
+                    Cursor cursor = dbSingle.dbReader.query(MyDataBase.TABLENAME_REPARE, null, MyDataBase.RP_CODE + " =?", new String[]{code}, null, null, null, null);
+
+                    if (cursor.getCount()>0){
+                        btnSavePostion.setEnabled(true);
+                        etPosition.setEnabled(true);
+                    }else {
+                        btnSavePostion.setEnabled(false);
+                        etPosition.setEnabled(false);
+                    }
+                    mData = GetData(cursor);
+                    cursor.close();
+                }
+
+                return true;
+            }
+        });
+
         tvClass = (TextView)findViewById(R.id.tv_RPCheckClass);
         tvCode = (TextView)findViewById(R.id.tv_RPCheckCode);
         btnSavePostion = (Button)findViewById(R.id.btn_SavePosition);
@@ -134,40 +165,6 @@ public class RepairCheckActivity extends AppCompatActivity {
         return list;
     }
 
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_ENTER){
-            //回车事件的响应
-            String code = etCode.getText().toString().replace("\n", "");
-            etCode.setText(code);
-
-            if (code.equals("")) {
-                //返回的数据是空的
-            } else {
-                //返回的数据不空
-                //隐藏键盘
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(etCode.getWindowToken(), 0);
-
-                Cursor cursor = dbSingle.dbReader.query(MyDataBase.TABLENAME_REPARE, null, MyDataBase.RP_CODE + " =?", new String[]{code}, null, null, null, null);
-
-                if (cursor.getCount()>0){
-                    btnSavePostion.setEnabled(true);
-                    etPosition.setEnabled(true);
-                }else {
-                    btnSavePostion.setEnabled(false);
-                    etPosition.setEnabled(false);
-                }
-                mData = GetData(cursor);
-                cursor.close();
-
-            }
-            return true;
-        }
-
-        return super.onKeyUp(keyCode, event);
-    }
-
     //提取出来方便点
     public final class ViewHolder {
         public TextView title;
@@ -204,6 +201,7 @@ public class RepairCheckActivity extends AppCompatActivity {
                 holder = (ViewHolder) convertView.getTag();
             }
 
+            //这种方法占用大量内存
 //            ViewHolder holder = new ViewHolder();
 //            convertView = mInflater.inflate(R.layout.layout_repaircheck_item, null);
 //            holder.info = (TextView) convertView.findViewById(R.id.tv_RPCheck_item);
@@ -212,7 +210,7 @@ public class RepairCheckActivity extends AppCompatActivity {
 
             holder.title.setText((String) mData.get(position).get("name"));
             holder.info.setText((String) mData.get(position).get("content"));
-            if (mData.get(position).get("section")==true){
+            if ((Boolean) (mData.get(position).get("section"))){
                 holder.info.setVisibility(View.GONE);
                 convertView.setBackgroundColor(parent.getResources().getColor(R.color.green_light));
             }else {

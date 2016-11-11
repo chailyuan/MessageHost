@@ -35,7 +35,6 @@ public class RepairImportActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setTitle("维修情况录入");
-//        toolbar.setSubtitle("linyuan");
         toolbar.setLogo(R.drawable.basket);
         setSupportActionBar(toolbar);
 

@@ -7,49 +7,40 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="欢迎使用"
+        android:text="@string/loginactivity_welcome"
         android:textSize="30sp"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="20dp"/>
-    <LinearLayout
+
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="用户名："/>
+        android:layout_height="wrap_content">
         <EditText
             android:id="@+id/login_username"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:singleLine="true"
-            android:textAlignment="center"
-            android:hint="请输入用户名"
-            android:background="@drawable/background_edit_show_list"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="10dp"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="密    码："/>
+            android:hint="@string/login_username_hint"
+            android:inputType="text"
+            android:maxLines="1"/>
+    </android.support.design.widget.TextInputLayout>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
         <EditText
             android:id="@+id/login_password"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:hint="请输入密码"
-            android:textAlignment="center"
-            android:password="true"
-            android:singleLine="true"
-            android:background="@drawable/background_edit_show_list"/>
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:hint="@string/login_password_hint"
+            android:imeActionId="@+id/login"
+            android:imeActionLabel=""
+            android:imeOptions="actionGo"
+            android:inputType="textPassword"
+            android:maxLines="1"/>
+    </android.support.design.widget.TextInputLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -60,7 +51,7 @@
         android:layout_height="wrap_content"
         android:focusable="true"
         android:background="@drawable/background_button_login"
-        android:text="登录"/>
+        android:text="@string/login_login_btn"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -75,7 +66,7 @@
             android:id="@+id/tv_forgotpassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="忘记密码？"
+            android:text="@string/login_forget"
             android:textColor="#aa4f94cd"/>
         <LinearLayout
             android:layout_width="match_parent"

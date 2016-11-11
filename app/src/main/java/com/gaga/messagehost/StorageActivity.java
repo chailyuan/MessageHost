@@ -91,74 +91,90 @@ public class StorageActivity extends AppCompatActivity implements View.OnClickLi
                 Toast.makeText(StorageActivity.this,"保存成功",Toast.LENGTH_SHORT).show();
             }
         });
+        etStorageCode.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                onCheck();
+                return true;
+            }
+        });
+
+    }
+
+    private boolean onCheck(){
+        //回车事件
+        String code = etStorageCode.getText().toString().replace("\n", "");
+        etStorageCode.setText(code);
+
+        if (code.equals("")){
+            //返回的数据是空的
+            Toast.makeText(this,"请输入条形码！",Toast.LENGTH_SHORT).show();
+            etStorageStyle.setEnabled(false);
+            etStoragePosition.setEnabled(false);
+            btnSave.setEnabled(false);
+
+        } else {
+            //返回的数据不空
+            //隐藏键盘
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(etStorageCode.getWindowToken(), 0);
+
+
+            Cursor cursor = dbSingle.dbReader.query(MyDataBase.TABLENAME_MAINTAIN,
+                    null,
+                    MyDataBase.MT_CODE + " =?",
+                    new String[]{code},
+                    null, null, null, null);
+
+            if (cursor.moveToNext()) {
+                //查询到了数据
+                etStorageStyle.setEnabled(true);
+                etStoragePosition.setEnabled(true);
+                btnSave.setEnabled(true);
+                inRadio.setEnabled(true);
+                outRadio.setEnabled(true);
+
+
+                String status = cursor.getString(cursor.getColumnIndex(MyDataBase.MT_STATUS));
+
+                cursor.close();
+
+                cursor = dbSingle.dbReader.query(MyDataBase.TABLENAME_REPARE, null, MyDataBase.RP_CODE + " =?", new String[]{code}, null, null, null, null);
+                if (cursor.moveToNext()) {
+                    String position = cursor.getString(cursor.getColumnIndex(MyDataBase.RP_POSITION));
+                    String type = cursor.getString(cursor.getColumnIndex(MyDataBase.RP_TYPE_EQUIPMENTS));
+                    etStoragePosition.setText(position);
+                    etStorageStyle.setText(type);
+                }
+
+                if (status.equals("在用")){
+                    outRadio.setChecked(true);
+                }else if (status.equals("库存")){
+                    inRadio.setChecked(true);
+                }
+            }else {
+                etStorageStyle.setEnabled(false);
+                etStoragePosition.setEnabled(false);
+                btnSave.setEnabled(false);
+                inRadio.setEnabled(false);
+                outRadio.setEnabled(false);
+
+                Toast.makeText(this,"未查询到数据！请检查",Toast.LENGTH_SHORT).show();
+            }
+            cursor.close();
+        }
+        return true;
+
+
 
     }
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_ENTER){
-            //回车事件
-            String code = etStorageCode.getText().toString().replace("\n", "");
-            etStorageCode.setText(code);
-
-            if (code.equals("")) {
-                //返回的数据是空的
-                Toast.makeText(this,"请输入条形码！",Toast.LENGTH_SHORT).show();
-                etStorageStyle.setEnabled(false);
-                etStoragePosition.setEnabled(false);
-                btnSave.setEnabled(false);
-
-            } else {
-                //返回的数据不空
-                //隐藏键盘
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(etStorageCode.getWindowToken(), 0);
-
-
-                Cursor cursor = dbSingle.dbReader.query(MyDataBase.TABLENAME_MAINTAIN, null, MyDataBase.MT_CODE + " =?", new String[]{code}, null, null, null, null);
-
-                if (cursor.moveToNext()) {
-                    //查询到了数据
-                    etStorageStyle.setEnabled(true);
-                    etStoragePosition.setEnabled(true);
-                    btnSave.setEnabled(true);
-                    inRadio.setEnabled(true);
-                    outRadio.setEnabled(true);
-
-
-                    String status = cursor.getString(cursor.getColumnIndex(MyDataBase.MT_STATUS));
-
-                    cursor.close();
-
-                    cursor = dbSingle.dbReader.query(MyDataBase.TABLENAME_REPARE, null, MyDataBase.RP_CODE + " =?", new String[]{code}, null, null, null, null);
-                    if (cursor.moveToNext()) {
-                        String position = cursor.getString(cursor.getColumnIndex(MyDataBase.RP_POSITION));
-                        String type = cursor.getString(cursor.getColumnIndex(MyDataBase.RP_TYPE_EQUIPMENTS));
-                        etStoragePosition.setText(position);
-                        etStorageStyle.setText(type);
-                    }
-
-                    if (status.equals("在用")){
-                        outRadio.setChecked(true);
-                    }else if (status.equals("库存")){
-                        inRadio.setChecked(true);
-                    }
-                }else {
-                    etStorageStyle.setEnabled(false);
-                    etStoragePosition.setEnabled(false);
-                    btnSave.setEnabled(false);
-                    inRadio.setEnabled(false);
-                    outRadio.setEnabled(false);
-
-                    Toast.makeText(this,"未查询到数据！请检查",Toast.LENGTH_SHORT).show();
-                }
-                cursor.close();
-            }
+            onCheck();
             return true;
-
-
         }
-
         return super.onKeyUp(keyCode, event);
     }
 

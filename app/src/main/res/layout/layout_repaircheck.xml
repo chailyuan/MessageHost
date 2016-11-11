@@ -32,6 +32,9 @@
             android:textColor="#0f0f0f"
             android:padding="5dp"
             android:hint="请输入条形码"
+            android:imeOptions="actionDone"
+            android:maxLines="1"
+            android:singleLine="true"
             android:text=""/>
 
     </LinearLayout>

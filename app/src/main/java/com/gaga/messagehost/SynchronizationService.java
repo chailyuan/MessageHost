@@ -28,6 +28,8 @@ public class SynchronizationService extends Service {
     public static final String BROADCAST_TITLE = "fromservice";
     public static final String BROADCAST_PC = "frompc";
 
+    public boolean quitSign = false;//退出标志
+
     public PcClient clientClass = null;
     private MyBinder myBinder = new MyBinder();
     public SynchronizationService() {
@@ -50,11 +52,12 @@ public class SynchronizationService extends Service {
             @Override
             public void run() {
                 super.run();
+                ServerSocket serverSocket = null;
 
                 try {
-                    ServerSocket serverSocket = new ServerSocket(12321);
+                    serverSocket = new ServerSocket(12321);
                     System.out.println("服务已启动，正在等待连接");
-                    while (true) {
+                    while (!quitSign) {
                         Socket socket = serverSocket.accept();
                         System.out.println("客户端已连接");
 
@@ -68,8 +71,17 @@ public class SynchronizationService extends Service {
                         sendBroadcast(intent);
 
                     }
+                    System.out.println("服务监听已退出");
                 } catch (IOException e) {
                     e.printStackTrace();
+                }finally {
+                    if (serverSocket!=null){
+                        try {
+                            serverSocket.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
 
             }
@@ -93,8 +105,10 @@ public class SynchronizationService extends Service {
         private MyDataBase dbSingle = null;
         private Cursor sendCursorA = null;
         private Cursor sendCursorB = null;
+        private Cursor sendCursorC = null;
         private int CountA = 0;
         private int CountB = 0;
+        private int CountC = 0;
 
         private Socket client = null;
         private InputStream inStream;
@@ -165,12 +179,14 @@ public class SynchronizationService extends Service {
         public void InitSendCursor(){
             sendCursorA = MyDataBase.GetDb(context).dbReader.rawQuery("SELECT * FROM "+MyDataBase.TABLENAME_MAINTAIN,null);
             sendCursorB = MyDataBase.GetDb(context).dbReader.rawQuery("SELECT * FROM "+MyDataBase.TABLENAME_REPARE,null);
+            sendCursorC = MyDataBase.GetDb(context).dbReader.rawQuery("SELECT * FROM "+MyDataBase.TABLENAME_DIGNOSE,null);
             CountA =sendCursorA.getCount();
             CountB =sendCursorB.getCount();
+            CountC =sendCursorC.getCount();
 
 
             try {
-                SendManager(2, 0, CountA+CountB, 0, 0, null);
+                SendManager(2, 0, CountA+CountB+CountC, 0, 0, null);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -194,23 +210,30 @@ public class SynchronizationService extends Service {
                         int currentNum = jsonObject.getInt(MyDataBase.JSON_CURRENTNUM);
 
                         Intent intent = new Intent(BROADCAST_MESSAGE);
-                        intent.putExtra("percent", currentNum*100/(CountA+CountB));
+                        intent.putExtra("percent", currentNum*100/(CountA+CountB+CountC));
                         sendBroadcast(intent);
 
                         if (currentNum<=CountA && CountA>0){
                             sendCursorA.moveToNext();
-                            SendManager(2,1,CountA+CountB,currentNum,1,sendCursorA);
+                            SendManager(2,1,CountA+CountB+CountC,currentNum,1,sendCursorA);
                         }else if (currentNum>CountA&&currentNum<=CountA+CountB&&CountB>0){
                             if (sendCursorA!=null){
                                 sendCursorA.close();
                                 sendCursorA = null;
                             }
                             sendCursorB.moveToNext();
-                            SendManager(2,1,CountA+CountB,currentNum,2,sendCursorB);
-                        }else if (currentNum>CountA+CountB){
+                            SendManager(2,1,CountA+CountB+CountC,currentNum,2,sendCursorB);
+                        }else if (currentNum>CountA+CountB && currentNum<=CountA+CountB+CountC&&CountC>0){
                             if (sendCursorB!=null){
                                 sendCursorB.close();
                                 sendCursorB = null;
+                            }
+                            sendCursorC.moveToNext();
+                            SendManager(2,1,CountA+CountB+CountC,currentNum,3,sendCursorB);
+                        }else if (currentNum>CountA+CountB+CountC){
+                            if (sendCursorC!=null){
+                                sendCursorC.close();
+                                sendCursorC = null;
                             }
                             SendManager(2,2,0,0,0,null);
                         }
@@ -240,6 +263,7 @@ public class SynchronizationService extends Service {
                             //清空数据库,清空两个表，第三个用户表留着
                             dbSingle.dbWriter.delete(MyDataBase.TABLENAME_REPARE,null,null);
                             dbSingle.dbWriter.delete(MyDataBase.TABLENAME_MAINTAIN,null,null);
+                            dbSingle.dbWriter.delete(MyDataBase.TABLENAME_DIGNOSE,null,null);
                             //同时把递增列归零
                             ContentValues cv = new ContentValues();
                             cv.put("seq", 0);
@@ -286,12 +310,20 @@ public class SynchronizationService extends Service {
                         }
 
                         break;
+
                     case MyDataBase.TABLENAME_REPARE:
                         //每一列不是唯一的
                         for (int i=0;i< MyDataBase.RP_ALL_TITLE.length;i++){
                             cv.put(MyDataBase.RP_ALL_TITLE[i],jsonObject.getString(MyDataBase.RP_ALL_TITLE[i]));
                         }
                         dbSingle.dbWriter.insert(MyDataBase.TABLENAME_REPARE, null, cv);
+                        break;
+
+                    case MyDataBase.TABLENAME_DIGNOSE:
+                        for (int i=0;i< MyDataBase.DIG_ALL_TITLE.length;i++){
+                            cv.put(MyDataBase.DIG_ALL_TITLE[i],jsonObject.getString(MyDataBase.DIG_ALL_TITLE[i]));
+                        }
+                        dbSingle.dbWriter.insert(MyDataBase.TABLENAME_DIGNOSE, null, cv);
                         break;
                 }
             } catch (JSONException e) {
@@ -309,7 +341,7 @@ public class SynchronizationService extends Service {
          * 发送信息管理
          * @param cursor:数据库的指针
          * @param order：标明是 0：ASK;1：IMPORT;2：EXPORT
-         * @param tableName 0,无效；1，MT；2,RP
+         * @param tableName 0,无效；1，MT；2,RP；3,dig
          *
          */
         public  void SendManager(int order,int sign,int totalnum,int currentnum,int tableName,Cursor cursor) throws JSONException {
@@ -345,6 +377,11 @@ public class SynchronizationService extends Service {
                             jsonMain.put(MyDataBase.JSON_TABLENAME,MyDataBase.TABLENAME_REPARE);
                             for (int i=0;i<MyDataBase.RP_ALL_TITLE.length;i++){
                                 jsonMain.put(MyDataBase.RP_ALL_TITLE[i],cursor.getString(cursor.getColumnIndex(MyDataBase.RP_ALL_TITLE[i])));
+                            }
+                        }else if (tableName == 3){
+                            jsonMain.put(MyDataBase.JSON_TABLENAME,MyDataBase.TABLENAME_DIGNOSE);
+                            for (int i=0;i<MyDataBase.DIG_ALL_TITLE.length;i++){
+                                jsonMain.put(MyDataBase.DIG_ALL_TITLE[i],cursor.getString(cursor.getColumnIndex(MyDataBase.DIG_ALL_TITLE[i])));
                             }
                         }
 
