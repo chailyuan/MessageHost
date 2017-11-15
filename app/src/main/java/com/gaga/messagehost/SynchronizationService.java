@@ -65,12 +65,12 @@ public class SynchronizationService extends Service {
                         clientClass.start();
 
 
-                        //动态发送广播给导入导出activity，用他来进行消息的显示
-                        Intent intent = new Intent(BROADCAST_MESSAGE);
-                        intent.putExtra(BROADCAST_TITLE, "PC已连接");
-                        sendBroadcast(intent);
+                    //动态发送广播给导入导出activity，用他来进行消息的显示
+                    Intent intent = new Intent(BROADCAST_MESSAGE);
+                    intent.putExtra(BROADCAST_TITLE, "PC已连接");
+                    sendBroadcast(intent);
 
-                    }
+                }
                     System.out.println("服务监听已退出");
                 } catch (IOException e) {
                     e.printStackTrace();
